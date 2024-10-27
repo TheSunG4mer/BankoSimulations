@@ -13,3 +13,8 @@ print(A)
 print(A & np.bitwise_not(incodeNumberInArray(11)))
 print(f"All sheets:\n{arrayOfSheets}\n")
 print(f"Minus 11:\n{arrayOfSheets & np.bitwise_not(incodeNumberInArray(11))}\n")
+
+arrayOfSheets = arrayOfSheets & np.bitwise_not(incodeNumberInArray(11))
+
+numberOfFinnishedRows = np.max(np.sum(np.all(arrayOfSheets == 0, axis=2), axis=1))
+print(f"Number of finnished rows: {numberOfFinnishedRows}")
