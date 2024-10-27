@@ -208,7 +208,7 @@ def getSheetFromType(sheet_type):
     types = []
     for i, count in enumerate(sheet_type):
         types.extend([i + 1] * count)
-    print(types)
+    #print(types)
     random.shuffle(types)
     
     A = np.zeros((3, 3), dtype=np.int32)

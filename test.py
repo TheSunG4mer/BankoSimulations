@@ -1,59 +1,15 @@
-import random
 import numpy as np
+from ConstructBankoSheet import getRandomSheet
+from BankoGame import incodeNumberInArray, incodeSheetIntoMatrix
 
-def mod_rest(x, m):
-    return x // m, x % m
+list_of_sheets = [getRandomSheet() for _ in range(10)]
+arrayOfSheets = np.array(list_of_sheets)
 
-def incodeListInArray(L):
-    A = np.array([0,0,0], dtype=np.int32)
-    for x in L:
-        d, r = mod_rest(x - 1, 30)
-        #print(d, r)
-        A[d] += 1 << r
-        #print(A[d], type(A[d]))
-    return A
-
-def printBinaryArray(A):
-    for x in A:
-        print(bin(x), end = " ")
-    print()
-
-def incodeSheetIntoMatrix(L):
-    A = np.zeros((3, 3), dtype=np.int32)
-    for i, l in enumerate(L):
-        for x in l:
-            d, r = mod_rest(x - 1, 30)
-            A[i, d] += 1 << r
-    return A
-
-L = [1, 5, 15, 25, 50]
-M = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31]
-N = range(1, 91)
-#print(2 << 30)
-
-print(1 << 1)
-
-A = incodeListInArray(L)
-B = incodeListInArray(M)
-
-printBinaryArray(A)
-printBinaryArray(B)
-
-printBinaryArray(A & B)
-
-printBinaryArray(incodeListInArray(N))
-
-print(incodeSheetIntoMatrix([L, M, N]))
-
-for sheet_type in range(1, 7):
-    if sheet_type < 4:
-        print([sheet_type - 1])
-    elif sheet_type < 7:
-        print(sorted([(1 - sheet_type) % 3, (2 - sheet_type) % 3]))
-    else:
-        print([0, 1, 2])
-
-
-L = [1, 5, 15, 25, 50]
-random.shuffle(L)
-print(L)
+#print(arrayOfSheets)
+A = incodeSheetIntoMatrix([[1, 24, 51, 79, 81], [5, 11, 30, 54, 66], [7, 15, 29, 35, 45]])
+B = incodeSheetIntoMatrix([[3, 21, 53, 75, 85], [8, 12, 31, 59, 69], [9, 15, 28, 32, 49]])
+arrayOfSheets = np.array([A, B])
+print(A)
+print(A & np.bitwise_not(incodeNumberInArray(11)))
+print(f"All sheets:\n{arrayOfSheets}\n")
+print(f"Minus 11:\n{arrayOfSheets & np.bitwise_not(incodeNumberInArray(11))}\n")
