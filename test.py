@@ -1,3 +1,4 @@
+import random
 import numpy as np
 
 def mod_rest(x, m):
@@ -43,3 +44,16 @@ printBinaryArray(A & B)
 printBinaryArray(incodeListInArray(N))
 
 print(incodeSheetIntoMatrix([L, M, N]))
+
+for sheet_type in range(1, 7):
+    if sheet_type < 4:
+        print([sheet_type - 1])
+    elif sheet_type < 7:
+        print(sorted([(1 - sheet_type) % 3, (2 - sheet_type) % 3]))
+    else:
+        print([0, 1, 2])
+
+
+L = [1, 5, 15, 25, 50]
+random.shuffle(L)
+print(L)

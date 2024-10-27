@@ -1,4 +1,5 @@
 import numpy as np
+from ConstructBankoSheet import getRandomSheet
 
 def mod_rest(x, m):
     return x // m, x % m
@@ -6,7 +7,7 @@ def mod_rest(x, m):
 def incodeListInArray(L):
     A = np.zeros(3, dtype=np.int32)
     for x in L:
-        d, r = mod_rest(x - 1, 30)
+        d, r = divmod(x - 1, 30)
         A[d] += 1 << r
     return A
 
@@ -14,7 +15,7 @@ def incodeSheetIntoMatrix(L):
     A = np.zeros((3, 3), dtype=np.int32)
     for i, l in enumerate(L):
         for x in l:
-            d, r = mod_rest(x - 1, 30)
+            d, r = divmod(x - 1, 30)
             A[i, d] += 1 << r
     return A
 
