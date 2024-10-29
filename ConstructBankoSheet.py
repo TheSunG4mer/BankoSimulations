@@ -5,32 +5,8 @@ from time import time
 
 import numpy as np
 
-def possibleNumbersInColumn(column):
-    if column == 1:
-        return 11
-    elif column == 9:
-        return 9
-    else:
-        return 10
 
-@cache
-def getNumberOfSheets(top_row = 5, middle_row = 5, bottom_row = 5, coloumns_left = 9):
-    if top_row == 0 and middle_row == 0 and bottom_row == 0 and coloumns_left == 0:
-        return 1
-    if coloumns_left == 0 or top_row < 0 or middle_row < 0 or bottom_row < 0:
-        return 0
-    total = 0
-    total += getNumberOfSheets(top_row - 1, middle_row, bottom_row, coloumns_left - 1)# * possibleNumbersInColumn(coloumns_left)
-    total += getNumberOfSheets(top_row, middle_row - 1, bottom_row, coloumns_left - 1)# * possibleNumbersInColumn(coloumns_left)
-    total += getNumberOfSheets(top_row, middle_row, bottom_row - 1, coloumns_left - 1)# * possibleNumbersInColumn(coloumns_left)
-    total += getNumberOfSheets(top_row - 1, middle_row - 1, bottom_row, coloumns_left - 1)# * comb(possibleNumbersInColumn(coloumns_left), 2)
-    total += getNumberOfSheets(top_row - 1, middle_row, bottom_row - 1, coloumns_left - 1)# * comb(possibleNumbersInColumn(coloumns_left), 2)
-    total += getNumberOfSheets(top_row, middle_row - 1, bottom_row - 1, coloumns_left - 1)# * comb(possibleNumbersInColumn(coloumns_left), 2)
-    total += getNumberOfSheets(top_row - 1, middle_row - 1, bottom_row - 1, coloumns_left - 1)# * comb(possibleNumbersInColumn(coloumns_left), 3)
-    return total
 
-# Number of sheets: 3669688706217187500
-# Number of sheets without placing any numbers (i.e just placements of numbers): 735210
 # Not all placements have same number of sheets, however, we will generate placements uniformly
 # and then randomly select a placement to generate a sheet
 
@@ -66,7 +42,7 @@ def numberOfSheetsWithType(one_coloumns, two_coloumns, three_coloumns, number_of
 ## next three are coloumns with two numbers, and last one is coloumn with three numbers. We simply conut the number of each type of 
 ## coloumn on a sheet. We list all possible type of sheet, and calculate their probablility of occuring:
 
-
+@cache
 def multinomial(L):
     """
     Calculate the multinomial coefficient for a given list of integers.
@@ -148,7 +124,7 @@ def getCummulativeFrequenciesForSheetTypes():
     frequency = []
 
     for sheet_type in sheet_types:
-        frequency.append(multinomial(sheet_type))
+        frequency.append(multinomial(tuple(sheet_type)))
 
     assert all([sum(l) == 9 for l in sheet_types])
     #print(sum(frequency)) # check if all sheet types are covered
@@ -175,7 +151,7 @@ def getRandomSheetType():
         if r < cf:
             return sheet_types[i]
 
-
+@cache
 def getInterval(coloumn_number):
     if coloumn_number == 1:
         return 1, 10
@@ -184,6 +160,7 @@ def getInterval(coloumn_number):
     else:
         return 10 * (coloumn_number - 1), 10 * coloumn_number
 
+@cache
 def convertTypeToIndecies(sheet_type):
     if sheet_type < 4:
         return [sheet_type - 1]

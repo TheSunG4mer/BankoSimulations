@@ -73,14 +73,47 @@ def plotResults(results):
         plt.plot(range(1, 91), row)
     plt.show()
 
+def readDataFromFile(filename):
+    with open(filename, "r") as f:
+        L = f.readlines()
+    i = 0
+    dataframe = {}
+    while i < len(L):
+        numberOfSheets = int(L[i])
+        dataframe[numberOfSheets] = [[0 for _ in range(90)] for _ in range(3)]
+        for j in range(3):
+            listOfRowNumbers = list(map(int, L[i + j + 1].split()))
+            for k in range(90):
+                dataframe[numberOfSheets][j][k] = listOfRowNumbers[k]
+        i += 4
+    return dataframe
+
+def saveResults(results, filename, numberOfSheets):
+    with open(filename, "r") as f:
+        L = f.readlines()
+    i = 0
+    dataframe = {numberOfSheets : results}
+    while i < len(L):
+        currentNumberOfSheets = int(L[i])
+        if currentNumberOfSheets not in dataframe:
+            dataframe[currentNumberOfSheets] = [[0 for _ in range(90)] for _ in range(3)]
+        for j in range(3):
+            listOfRowNumbers = list(map(int, L[i + j + 1].split()))
+            for k in range(90):
+                dataframe[currentNumberOfSheets][j][k] += listOfRowNumbers[k]
+        i += 4
+
+    with open(filename, "w") as f:
+        for numberOfSheets, results in dataframe.items():
+            f.write(str(numberOfSheets) + "\n")
+            for i, row in enumerate(results):
+                f.write(" ".join(map(str, row)) + "\n")
+
 
 if __name__ == "__main__":
-    # game = BankoGame(10)
-    # print(game.runGame())
-    # game = BankoGame(100)
-    # print(game.runGame())
-    # game = BankoGame(1000)
-    # print(game.runGame())
-    game = BankoGame(1)
-    results = game.runTurnament(100000)
-    plotResults(results)
+    numberOfSheets = 100
+    numberOfGames = 500000
+    game = BankoGame(numberOfSheets)
+    results = game.runTurnament(numberOfGames)
+    #plotResults(results)
+    saveResults(results, "results.txt", numberOfSheets)
