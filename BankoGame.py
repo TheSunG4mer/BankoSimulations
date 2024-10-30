@@ -111,8 +111,8 @@ def saveResults(results, filename, numberOfSheets):
 
 
 if __name__ == "__main__":
-    numberOfSheets = 100
-    numberOfGames = 500000
+    numberOfSheets = 10
+    numberOfGames = 1000000
     game = BankoGame(numberOfSheets)
     results = game.runTurnament(numberOfGames)
     #plotResults(results)

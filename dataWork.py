@@ -9,7 +9,7 @@ dataFrame = readDataFromFile("results.txt")
 
 #plotResults(dataFrame[30])
 
-n = 100
+n = 10
 
 simulated30 = dataFrame[n]
 exact30 = nIndependentSheets(n)
